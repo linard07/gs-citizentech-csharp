@@ -1,0 +1,107 @@
+### Exemplos de requisições (extensão "REST Client" do VS Code ou Rider/Visual Studio).
+### Execute a API antes: dotnet run --project src/CitizenTech.Api
+@host = http://localhost:5080
+
+### 1) Pontos de segurança (fictícios) cadastrados na inicialização
+GET {{host}}/api/safe-zones
+
+### 2) Medição de chuva acima do limiar (55 mm/dia) -> cria alerta (201)
+POST {{host}}/api/alerts
+Content-Type: application/json
+
+{
+  "type": "ChuvaForte",
+  "measuredValue": 55,
+  "region": "Sé",
+  "latitude": -23.5503,
+  "longitude": -46.6339,
+  "source": "Modelo ML",
+  "predictedProbability": 0.82
+}
+
+### 3) Medição abaixo do limiar (10 mm/dia) -> 200, nenhum alerta criado
+POST {{host}}/api/alerts
+Content-Type: application/json
+
+{
+  "type": "ChuvaForte",
+  "measuredValue": 10,
+  "region": "Sé",
+  "latitude": -23.5503,
+  "longitude": -46.6339
+}
+
+### 4) Calor extremo (39 °C) -> alerta
+POST {{host}}/api/alerts
+Content-Type: application/json
+
+{
+  "type": "CalorExtremo",
+  "measuredValue": 39,
+  "region": "Santo Amaro",
+  "latitude": -23.654,
+  "longitude": -46.709
+}
+
+### 5) Listar alertas ativos (com filtros e paginação)
+GET {{host}}/api/alerts?status=Ativo&page=1&pageSize=10
+
+### 6) Buscar um alerta
+GET {{host}}/api/alerts/1
+
+### 7) Pontos de segurança mais próximos e compatíveis com o alerta 1
+GET {{host}}/api/alerts/1/safe-zones?limit=3
+
+### 8) Registrar entrada de 40 pessoas no ponto 3 durante o alerta 1
+POST {{host}}/api/alerts/1/check-ins
+Content-Type: application/json
+
+{
+  "safeZoneId": 3,
+  "people": 40
+}
+
+### 9) Estatísticas
+GET {{host}}/api/alerts/statistics
+
+### 10) Registrar saída de 10 pessoas do ponto 3
+POST {{host}}/api/safe-zones/3/check-out
+Content-Type: application/json
+
+{
+  "people": 10
+}
+
+### 11) Encerrar o alerta 1
+POST {{host}}/api/alerts/1/close
+
+### 12) Erro de regra de negócio (422): encerrar de novo
+POST {{host}}/api/alerts/1/close
+
+### 13) Erro 404: alerta inexistente
+GET {{host}}/api/alerts/9999
+
+### 14) Erro de validação (400): latitude fora do intervalo
+POST {{host}}/api/alerts
+Content-Type: application/json
+
+{
+  "type": "ChuvaForte",
+  "measuredValue": 55,
+  "region": "Sé",
+  "latitude": 200,
+  "longitude": -46.6339
+}
+
+### 15) Cadastrar novo ponto de segurança
+POST {{host}}/api/safe-zones
+Content-Type: application/json
+
+{
+  "name": "Ponto Novo (fictício)",
+  "address": "Rua Exemplo, 100",
+  "latitude": -23.56,
+  "longitude": -46.65,
+  "capacity": 120,
+  "services": "AirConditioning, LowCostWater"
+}

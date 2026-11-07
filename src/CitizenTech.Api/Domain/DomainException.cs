@@ -1,0 +1,7 @@
+namespace CitizenTech.Api.Domain;
+
+/// <summary>Violação de uma regra de negócio do domínio.</summary>
+public class DomainException : Exception
+{
+    public DomainException(string message) : base(message) { }
+}

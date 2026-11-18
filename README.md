@@ -334,6 +334,3 @@ As capturas de tela da API estão disponíveis na pasta `docs/evidencias/`.
 | Consulta dos pontos de proteção | [get protection-points.JPG](docs/evidencias/get%20protection-points.JPG) |
 
 Todas as evidências foram capturadas durante a execução local da aplicação.
-## Repositório
-
-**GitHub:** adicionar o endereço definitivo do repositório Oasis-CSharp após a publicação.

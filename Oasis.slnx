@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Oasis.Api/Oasis.Api.csproj" />
+  <Project Path="Oasis.Domain/Oasis.Domain.csproj" />
+  <Project Path="Oasis.Tests/Oasis.Tests.csproj" />
+</Solution>
